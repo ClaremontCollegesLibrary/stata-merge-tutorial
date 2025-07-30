@@ -1,2 +1,5 @@
 # stata-merge-tutorial
-Tutorial for using import, export, and merge features as well as .do files.
+Tutorial for using Stata import, export, and merge commands as well as .do files.
+
+[Once published, link to Stata Essentials - Quick Start Guide from Library Research Guides]
+
