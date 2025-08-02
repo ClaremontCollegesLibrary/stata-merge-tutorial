@@ -5,7 +5,20 @@
 
 frames reset
 
-//IMPORT PENN WORLD TABLE DATA, SELECT 2019
+//IMPORT WORLD BANK DATA, RENAME "BL" COLUMN
+//SAVE AS DTA
+
+frame create gdppc
+frame change gdppc
+
+import excel "API_NY.GDP.PCAP.CD_DS2_en_excel_v2_193.xls", clear firstrow cellrange(A4:BP270)
+keep CountryName CountryCode BL
+ 
+rename (BL CountryCode) (GDPPC countrycode)
+
+save gdppc2019.dta, replace
+
+//IMPORT PENN WORLD TABLE DATA, SELECT ONLY 2019
 //SAVE AS DTA
 
 frame create pwt1001
@@ -15,24 +28,12 @@ import excel "pwt1001.xlsx", clear firstrow sheet("Data")
 
 keep if year==2019
 
-rename countrycode CountryCode
-
 save pwt1001_2019.dta, replace
-
-//IMPORT WORLD BANK DATA
-//SAVE AS DTA
-
-frame create gdppc
-frame change gdppc
-
-import excel "API_NY.GDP.PCAP.CD_DS2_en_excel_v2_193.xls", clear firstrow cellrange(A4:BP270)
-keep CountryName CountryCode BL
-save gdppc2019.dta, replace
 
 //MERGE PWT & WB DATA
 //FILTER FOR 2019
-frame change pwt1001
-merge 1:1 CountryCode using gdppc2019, keep(match)
+
+merge 1:1 countrycode using gdppc2019, keep(match)
 
 // SAVE MERGED DATA AS DTA
 save merged_2019.dta, replace
